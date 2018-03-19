@@ -1,10 +1,12 @@
 package com.newstyle.entlive.userinfo;
 
+import com.newstyle.entlive.base.NoProguard;
+
 /**
  * Created by wangdong on 2018/3/15.
  */
 
-public class UserInfo {
+public class UserInfo implements NoProguard{
 
     /**
      * 用户ID

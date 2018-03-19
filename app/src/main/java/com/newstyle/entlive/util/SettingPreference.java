@@ -13,6 +13,8 @@ public class SettingPreference {
     // 是否强制调试模式
     private static final String IS_FORCE_DEBUG = "is_force_debug";
 
+    private static final String IS_OPEN_LOG = "is_open_log";
+
 
     private static SharedPreferences getUserSPSetting(Context context){
         return context.getSharedPreferences(USER_SETTING, 0);
@@ -37,6 +39,26 @@ public class SettingPreference {
      */
     public static boolean isForceDebug(Context context) {
         return getUserSPSetting(context).getBoolean(IS_FORCE_DEBUG, false);
+    }
+
+    /**
+     * 设置是否打开log
+     * @param context
+     * @param isOpen
+     */
+    public static void saveOpenLog(Context context, boolean isOpen) {
+        SharedPreferences.Editor editor = getUserSPSetting(context).edit();
+        editor.putBoolean(IS_OPEN_LOG,isOpen);
+        editor.commit();
+    }
+
+    /**
+     * 得到是否打开log
+     * @param context
+     * @return
+     */
+    public static boolean getOpenLog(Context context) {
+        return getUserSPSetting(context).getBoolean(IS_OPEN_LOG,false);
     }
 
 }
