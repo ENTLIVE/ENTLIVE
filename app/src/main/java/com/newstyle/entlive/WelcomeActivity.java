@@ -23,7 +23,7 @@ public class WelcomeActivity extends BaseActivity{
     }
 
     private void gotoMainPage(){
-
+        //跳转到主页面
     }
 
 }
