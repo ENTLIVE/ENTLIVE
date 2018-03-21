@@ -411,4 +411,12 @@ public static final ** CREATOR;
 -keep class com.newstyle.entlive.im.mode.** {*;}
 -keep class * implements com.newstyle.entlive.base.NoProguard {*;}
 
+#腾讯云IM
+-keep class com.tencent.**{*;}
+-dontwarn com.tencent.**
 
+-keep class tencent.**{*;}
+-dontwarn tencent.**
+
+-keep class qalsdk.**{*;}
+-dontwarn qalsdk.**

@@ -4,6 +4,12 @@ android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
 
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
     defaultConfig {
         applicationId "com.newstyle.entlive"
         minSdkVersion 21
@@ -11,6 +17,20 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+
+        //忽略方法数限制的检查
+        dexOptions {
+            jumboMode = true
+        }
+        // 设置支持的SO库架构
+        ndk {
+            abiFilters 'armeabi-v7a' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
 
     signingConfigs {
@@ -62,6 +82,7 @@ android {
         }
     }
 
+    useLibrary 'org.apache.http.legacy'
 }
 
 ext {
@@ -93,6 +114,10 @@ dependencies {
     //glide图片加载库
     implementation "com.github.bumptech.glide:glide:${glide_need_version}"
     annotationProcessor "com.github.bumptech.glide:compiler:${glide_need_version}"
+    //导入腾讯云直播
+    api (name: 'LiteAVSDK_Professional_4.3.3610', ext: 'aar')
+    //融云
+    compile project(':tencentIm')
     //testImplementation 'junit:junit:4.12'
     //androidTestImplementation 'com.android.support.test:runner:1.0.1'
     //androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
