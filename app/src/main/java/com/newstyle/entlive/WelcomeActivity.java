@@ -22,6 +22,8 @@ public class WelcomeActivity extends BaseActivity{
         setContentView(R.layout.activity_welcome_layout);
     }
 
+
+
     private void gotoMainPage(){
         //跳转到主页面
     }

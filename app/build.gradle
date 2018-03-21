@@ -53,6 +53,15 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a'
+            universalApk false
+        }
+    }
+
 }
 
 ext {
