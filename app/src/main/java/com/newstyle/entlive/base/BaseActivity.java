@@ -50,6 +50,8 @@ public class BaseActivity extends RxAppCompatActivity implements Constant {
         LogUtil.logLocal("Activity",getClass().getName()+"-onCreate");
     }
 
+
+
     /**
      * 设置状态栏
      */

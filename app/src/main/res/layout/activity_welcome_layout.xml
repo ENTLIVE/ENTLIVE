@@ -10,4 +10,17 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_ugc"
         />
+    <Button
+        android:id="@+id/send_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="发送消息"
+        />
+    <Button
+        android:id="@+id/end_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toLeftOf="parent"
+        android:text="取消消息订阅"
+        />
 </android.support.constraint.ConstraintLayout>

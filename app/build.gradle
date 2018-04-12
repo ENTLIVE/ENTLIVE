@@ -89,6 +89,8 @@ ext {
     support_need_version = '26.1.0'
     butterknife_need_version = '8.4.0'
     glide_need_version = '4.6.1'
+    okhttp_need_version = '3.10.0'
+    retrofit_need_version = '2.4.0'
 }
 
 dependencies {
@@ -111,13 +113,23 @@ dependencies {
     //依赖注入框架
     api "com.jakewharton:butterknife:${butterknife_need_version}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterknife_need_version}"
+    //okhttp加retrofit
+    compile "com.squareup.okhttp3:okhttp:${okhttp_need_version}"
+    compile "com.squareup.okhttp3:okhttp-urlconnection:${okhttp_need_version}"
+    compile "com.squareup.okhttp3:logging-interceptor:${okhttp_need_version}"
+    compile "com.squareup.retrofit2:retrofit:${retrofit_need_version}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${retrofit_need_version}"
+    compile "com.squareup.retrofit2:converter-gson:${retrofit_need_version}"
     //glide图片加载库
     implementation "com.github.bumptech.glide:glide:${glide_need_version}"
     annotationProcessor "com.github.bumptech.glide:compiler:${glide_need_version}"
     //导入腾讯云直播
     api (name: 'LiteAVSDK_Professional_4.3.3610', ext: 'aar')
-    //融云
+    //导入easypermissions框架
+    implementation 'pub.devrel:easypermissions:1.2.0'
+    //腾讯IM
     compile project(':tencentIm')
+
     //testImplementation 'junit:junit:4.12'
     //androidTestImplementation 'com.android.support.test:runner:1.0.1'
     //androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

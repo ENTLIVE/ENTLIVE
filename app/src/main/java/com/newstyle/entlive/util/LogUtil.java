@@ -28,6 +28,15 @@ public class LogUtil {
     }
 
     /**
+     * 判断是否调试模式
+     *
+     * @return
+     */
+    public static boolean isDebugMode() {
+        return sIsDebugMode;
+    }
+
+    /**
      * log.e
      * @param tag
      * @param msg

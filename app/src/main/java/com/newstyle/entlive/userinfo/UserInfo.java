@@ -34,5 +34,9 @@ public class UserInfo implements NoProguard{
     public int sex;
 
 
+    /**
+     * 用户表示token
+     */
+    public String token;
 
 }

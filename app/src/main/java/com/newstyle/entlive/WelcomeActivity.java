@@ -3,12 +3,29 @@ package com.newstyle.entlive;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.newstyle.entlive.base.BaseActivity;
 import com.newstyle.entlive.util.LogUtil;
+import com.newstyle.entlive.util.rxbus.RxBus;
+import com.newstyle.entlive.util.rxbus.RxBusSubscriber;
 import com.tencent.imsdk.TIMManager;
 import com.tencent.rtmp.TXLiveBase;
+
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.ResourceSubscriber;
 
 /**
  * Created by wangdong on 2018/3/13.
@@ -27,8 +44,14 @@ public class WelcomeActivity extends BaseActivity{
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         setContentView(R.layout.activity_welcome_layout);
 
-        String sdkver = TXLiveBase.getSDKVersionStr();
-        LogUtil.log(TAG,sdkver);
+        Button sendMsg = (Button)findViewById(R.id.send_msg);
+        sendMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
 
     }
 
@@ -38,4 +61,9 @@ public class WelcomeActivity extends BaseActivity{
         //跳转到主页面
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 }

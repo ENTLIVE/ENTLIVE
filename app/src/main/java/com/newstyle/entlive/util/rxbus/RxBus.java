@@ -1,14 +1,26 @@
 package com.newstyle.entlive.util.rxbus;
 
+import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.util.Log;
+
+import com.newstyle.entlive.util.LogUtil;
+
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.FlowableSubscriber;
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
@@ -22,7 +34,8 @@ public class RxBus {
     private static volatile RxBus mInstance;
     private static final String TAG = RxBus.class.getSimpleName();
     public static boolean DEBUG = false;
-    private ConcurrentHashMap<Object, List<Subject>> subjectMapper = new ConcurrentHashMap<>();
+
+    private ConcurrentHashMap<Object, List<FlowableEmitter>> flowableMap = new ConcurrentHashMap<>();
 
     private RxBus() {
     }
@@ -38,27 +51,6 @@ public class RxBus {
         return mInstance;
     }
 
-
-    /**
-     * 发送事件
-     */
-    public void post(@NonNull Object tag, @NonNull Object content) {
-        if (subjectMapper == null) {
-            return;
-        }
-        List<Subject> subjectList = subjectMapper.get(tag);
-
-        if (!isEmpty(subjectList)) {
-            for (Subject subject : subjectList) {
-                if (subject != null) {
-                    subject.onNext(content);
-                }
-            }
-        }
-        if (DEBUG) Log.d(TAG, "[send]subjectMapper: " + subjectMapper);
-    }
-
-
     /**
      * 订阅
      * @param tag
@@ -66,36 +58,52 @@ public class RxBus {
      * @param <T>
      * @return
      */
-    public <T> Observable<T> register(@NonNull Object tag, @NonNull Class<T> clazz) {
-        List<Subject> subjectList = subjectMapper.get(tag);
-        if (null == subjectList) {
-            subjectList = new ArrayList<>();
-            subjectMapper.put(tag, subjectList);
-        }
+    public <T> Flowable<T> registerEvent(@NonNull Object tag, @NonNull Class<T> clazz) {
+        FlowableOnSubscribe flowableOnSubscribe = new FlowableOnSubscribe<T>() {
+            @Override
+            public void subscribe(FlowableEmitter emitter) throws Exception {
+                List<FlowableEmitter> emitterList = flowableMap.get(tag);
+                if (emitterList == null) {
+                    emitterList = new ArrayList<>();
+                    flowableMap.put(tag,emitterList);
+                }
+                emitterList.add(emitter);
+                emitter.setDisposable(new Disposable() {
+                    boolean isDispost = false;
+                    @Override
+                    public void dispose() {
+                        List<FlowableEmitter> emitterList = flowableMap.get(tag);
+                        if (emitterList != null) {
+                            emitterList.remove(emitter);
+                        }
+                        isDispost = true;
+                    }
 
-        Subject<T> subject;
-        subjectList.add(subject = PublishSubject.create());
-        if (DEBUG) Log.d(TAG, "[register]subjectMapper: " + subjectMapper);
-        return subject;
+                    @Override
+                    public boolean isDisposed() {
+                        return isDispost;
+                    }
+                });
+            }
+        };
+
+        Flowable flowable = Flowable.create(flowableOnSubscribe, BackpressureStrategy.BUFFER);
+        return flowable;
     }
 
-    /**
-     * 取消订阅
-     * @param tag
-     * @param observable
-     */
-    public void unregister(@NonNull Object tag, @NonNull Observable observable) {
-        List<Subject> subjects = subjectMapper.get(tag);
-        if (null != subjects) {
-            subjects.remove(observable);
-            if (isEmpty(subjects)) {
-                subjectMapper.remove(tag);
-            }
-            if (!observable.subscribe().isDisposed()) {
-                observable.subscribe().dispose();
+    public void postEvent(@NonNull Object tag, @NonNull Object content) {
+        if (flowableMap == null) {
+            return;
+        }
+        List<FlowableEmitter> emitterList = flowableMap.get(tag);
+
+        if (!isEmpty(emitterList)) {
+            for (FlowableEmitter emitter : emitterList) {
+                if (emitter != null) {
+                    emitter.onNext(content);
+                }
             }
         }
-        if (DEBUG) Log.d(TAG, "[unregister]subjectMapper: " + subjectMapper);
     }
 
     private static boolean isEmpty(Collection collection) {
@@ -103,13 +111,13 @@ public class RxBus {
     }
 
     public void clear() {
-        for (Object obj : subjectMapper.keySet()) {
-            List<Subject> subjects = subjectMapper.get(obj);
+        for (Object obj : flowableMap.keySet()) {
+            List<FlowableEmitter> subjects = flowableMap.get(obj);
             if (null != subjects) {
                 subjects.clear();
             }
         }
-        subjectMapper.clear();
+        flowableMap.clear();
     }
 
 }
