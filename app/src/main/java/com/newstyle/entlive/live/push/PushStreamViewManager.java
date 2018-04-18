@@ -4,6 +4,7 @@ import com.newstyle.entlive.util.rxbus.RxBus;
 
 /**
  * Created by wangdong on 2018/4/18.
+ * 这个类从逻辑上来说，更像是推流模块的P层
  */
 
 public class PushStreamViewManager implements PushStreamListener{

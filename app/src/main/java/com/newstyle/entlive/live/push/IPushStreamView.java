@@ -2,6 +2,7 @@ package com.newstyle.entlive.live.push;
 
 /**
  * Created by wangdong on 2018/4/18.
+ * 定义推流接口，隔离底层第三方框架的具体方法
  */
 
 public interface IPushStreamView {
