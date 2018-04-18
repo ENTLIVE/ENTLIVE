@@ -32,7 +32,7 @@ public class UserInfoManager {
      * @param userInfo
      */
     public void saveUserInfo(UserInfo userInfo){
-
+        //TODO 持久化存储用户信息
     }
 
     /**

@@ -34,20 +34,34 @@ public class LoginManager {
     }
 
     /**
+     * 注册和登录
+     * @param username
+     * @param password
+     * @param callback
+     */
+    public void registerAndLogin(String username, String password,LoginCallback callback){
+
+    }
+
+    /**
      * 通过用户名密码登录
      * @param username
      * @param password
      */
-    public void pwdLogin(String username, String password){
+    public void pwdLogin(String username, String password,LoginCallback callback){
+        if (checkTokenAble()) {
 
+        }
     }
 
     /**
      * 其他客户端登录
      * @param platformType
      */
-    public void otherAuthLogin(int platformType){
+    public void otherAuthLogin(int platformType,LoginCallback callback){
+        if (checkTokenAble()) {
 
+        }
     }
 
     /**
@@ -57,4 +71,23 @@ public class LoginManager {
     public void imLogin(String userSig){
 
     }
+
+    /**
+     * 检查是否登录
+     * @return
+     */
+    public boolean checkIsLogin(){
+
+        return false;
+    }
+
+    /**
+     * 检查token是否有效
+     * @return
+     */
+    public boolean checkTokenAble(){
+
+        return false;
+    }
+
 }
