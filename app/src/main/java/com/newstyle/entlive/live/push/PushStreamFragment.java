@@ -13,7 +13,7 @@ import com.newstyle.entlive.base.BaseFragment;
  * 推流界面
  */
 
-public class PushStreamFragment extends BaseFragment{
+public class PushStreamFragment extends BaseFragment implements PushContract.View{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,6 +24,11 @@ public class PushStreamFragment extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void setPresenter(PushContract.Presenter presenter) {
+
     }
 
 }

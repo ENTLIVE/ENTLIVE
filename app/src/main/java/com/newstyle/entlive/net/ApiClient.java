@@ -1,8 +1,10 @@
 package com.newstyle.entlive.net;
 
+import com.newstyle.entlive.userinfo.UserInfo;
 import com.newstyle.entlive.util.LogUtil;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -12,6 +14,7 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import rx.Observable;
 
 /**
  * Created by wangdong on 2018/4/9.
@@ -80,5 +83,13 @@ public class ApiClient {
     }
 
 
+    /**
+     * 登录接口
+     * @param params
+     * @return
+     */
+    public static Observable<BaseResult<UserInfo>> loginGetUserInfo(Map<String, String> params){
+        return ApiClient.getInstance().mRequestManager.loginGetUserInfo(params);
+    }
 
 }

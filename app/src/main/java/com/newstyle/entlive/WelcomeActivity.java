@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.newstyle.entlive.base.BaseActivity;
+import com.newstyle.entlive.net.ApiClient;
 import com.newstyle.entlive.util.LogUtil;
 import com.newstyle.entlive.util.rxbus.RxBus;
 import com.newstyle.entlive.util.rxbus.RxBusSubscriber;
@@ -16,6 +17,8 @@ import com.tencent.rtmp.TXLiveBase;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+
+import java.util.HashMap;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
@@ -52,6 +55,12 @@ public class WelcomeActivity extends BaseActivity{
             }
         });
 
+        HashMap<String,String> params = new HashMap<>();
+        params.put("name","wangdong");
+        params.put("password","1234");
+        /*ApiClient.loginGetUserInfo(params)
+                .compose()
+                .subscribe()*/
 
     }
 
