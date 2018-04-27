@@ -69,15 +69,15 @@ public class WelcomeActivity extends BaseActivity{
         ApiClient.loginGetUserInfo(params)
                 .compose(bindToLifecycle())//绑定Activity或者fragment的生命周期
                 .observeOn(AndroidSchedulers.mainThread())//切换到主线程
-                .subscribe(new Action1<BaseResult<UserInfo>>() {
+                .subscribe(new Consumer<BaseResult<UserInfo>>() {
                     @Override
-                    public void call(BaseResult<UserInfo> userInfoBaseResult) {
+                    public void accept(BaseResult<UserInfo> userInfoBaseResult) throws Exception {
                         //在这处理结果
                         UserInfo userInfo = userInfoBaseResult.result;
                     }
-                }, new Action1<Throwable>() {
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) throws Exception {
                         //在这处理异常
                     }
                 });*/
