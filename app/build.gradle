@@ -128,7 +128,9 @@ dependencies {
     //导入easypermissions框架
     implementation 'pub.devrel:easypermissions:1.2.0'
     //腾讯IM
-    compile project(':tencentIm')
+    //compile project(':tencentIm')
+    //阿里推拉流
+    compile project(':alipusherplayer')
 
     //testImplementation 'junit:junit:4.12'
     //androidTestImplementation 'com.android.support.test:runner:1.0.1'

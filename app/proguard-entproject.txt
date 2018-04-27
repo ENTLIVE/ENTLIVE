@@ -420,3 +420,7 @@ public static final ** CREATOR;
 
 -keep class qalsdk.**{*;}
 -dontwarn qalsdk.**
+
+#阿里云推拉流sdk
+-keep class com.alibaba.livecloud.** { *;}
+-keep class com.alivc.** { *;}

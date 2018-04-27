@@ -1,5 +1,6 @@
 package com.newstyle.entlive;
 
+import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,14 +9,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.newstyle.entlive.base.BaseActivity;
+import com.newstyle.entlive.live.push.PushActivity;
 import com.newstyle.entlive.net.ApiClient;
 import com.newstyle.entlive.net.BaseResult;
 import com.newstyle.entlive.userinfo.UserInfo;
 import com.newstyle.entlive.util.LogUtil;
 import com.newstyle.entlive.util.rxbus.RxBus;
 import com.newstyle.entlive.util.rxbus.RxBusSubscriber;
-import com.tencent.imsdk.TIMManager;
-import com.tencent.rtmp.TXLiveBase;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -58,7 +58,7 @@ public class WelcomeActivity extends BaseActivity{
         sendMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(WelcomeActivity.this, PushActivity.class));
             }
         });
 
@@ -69,15 +69,15 @@ public class WelcomeActivity extends BaseActivity{
         ApiClient.loginGetUserInfo(params)
                 .compose(bindToLifecycle())//绑定Activity或者fragment的生命周期
                 .observeOn(AndroidSchedulers.mainThread())//切换到主线程
-                .subscribe(new Action1<BaseResult<UserInfo>>() {
+                .subscribe(new Consumer<BaseResult<UserInfo>>() {
                     @Override
-                    public void call(BaseResult<UserInfo> userInfoBaseResult) {
+                    public void accept(BaseResult<UserInfo> userInfoBaseResult) throws Exception {
                         //在这处理结果
                         UserInfo userInfo = userInfoBaseResult.result;
                     }
-                }, new Action1<Throwable>() {
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) throws Exception {
                         //在这处理异常
                     }
                 });*/

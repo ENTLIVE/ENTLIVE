@@ -1,1 +1,1 @@
-include ':app', ':tencentIm'
+include ':app', ':alipusherplayer'

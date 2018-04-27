@@ -1,5 +1,6 @@
 package com.newstyle.entlive.live.push;
 
+import com.newstyle.entlive.util.LogUtil;
 import com.newstyle.entlive.util.rxbus.RxBus;
 
 /**
@@ -8,6 +9,8 @@ import com.newstyle.entlive.util.rxbus.RxBus;
  */
 
 public class PushStreamViewManager implements PushStreamListener{
+
+    private static final String LOG = PushStreamViewManager.class.getSimpleName();
 
     private IPushStreamView mPushStreamView;
 
@@ -22,9 +25,15 @@ public class PushStreamViewManager implements PushStreamListener{
      */
     private void initSetting(){
         mPushStreamView.setStreamListener(this);
-        mPushStreamView.setCameraFacing(0);
-        mPushStreamView.setTargetVideoSize(IPushStreamView.VIDEO_SIZE_854_480P);
+
         //.......
+    }
+
+    /**
+     * 开始预览
+     */
+    public void startPreview(){
+        mPushStreamView.startPreview();
     }
 
     /**
@@ -32,14 +41,15 @@ public class PushStreamViewManager implements PushStreamListener{
      * @param url
      */
     public void startPushStream(String url){
-
+        mPushStreamView.setStreamUrl(url);
+        mPushStreamView.startStreaming();
     }
 
     /**
      * 停止推流
      */
     public void stopPushStream(){
-
+        mPushStreamView.stopStreaming();
     }
 
     /**
@@ -55,17 +65,44 @@ public class PushStreamViewManager implements PushStreamListener{
      * @param isOpen
      */
     public void setIsOpenBeauty(boolean isOpen){
-
+        mPushStreamView.setBeautyIsOpen(isOpen);
     }
 
     @Override
-    public void onInfo(int code) {
+    public void onPushInfo(int code) {
         //根据事件类型，发送事件通知
-        RxBus.getInstance().postEvent("事件类型",null);
+        //RxBus.getInstance().postEvent("事件类型",null);
+        LogUtil.logLocal(LOG,"onPushInfo-code: "+code);
     }
 
     @Override
-    public void onError(int error) {
+    public void onError(int errorCode,String msg) {
+        LogUtil.logLocal(LOG,"onError-code: "+errorCode+"; msg: "+msg);
+    }
 
+    @Override
+    public void onNetworkState(int state) {
+        LogUtil.logLocal(LOG,"onNetworkState-state: "+state);
+    }
+
+    /**
+     * 同步fragment的生命周期
+     */
+    public void onCreate(){
+
+    }
+
+    public void onResume(){
+        mPushStreamView.onResume();
+    }
+
+
+
+    public void onPause(){
+        mPushStreamView.onPause();
+    }
+
+    public void onDestroy(){
+        mPushStreamView.release();
     }
 }

@@ -15,33 +15,9 @@ public interface IPushStreamView {
 
     /**
      * 设置推流错误回调
-     * @param pushStreamViewManager
+     * @param streamListener
      */
-    void setStreamListener(PushStreamViewManager pushStreamViewManager);
-
-    /**
-     * 设置预览帧率
-     * @param fps
-     */
-    void setPreviewFps(float fps);
-
-    /**
-     * 设置推流帧率
-     * @param fps
-     */
-    void setTargetFps(float fps);
-
-    /**
-     * 设置视频码率
-     * @param kBitrate
-     */
-    void setVideoKBitrate(int kBitrate);
-
-    /**
-     * 设置视频的
-     * @param size @reference(VIDEO_SIZE_1280_720P,VIDEO_SIZE_854_480P,VIDEO_SIZE_640_360P)
-     */
-    void setTargetVideoSize(int size);
+    void setStreamListener(PushStreamListener streamListener);
 
     /**
      * 设置软硬解
@@ -54,6 +30,11 @@ public interface IPushStreamView {
      * @param cameraFacing
      */
     void setCameraFacing(int cameraFacing);
+
+    /**
+     * 开始预览
+     */
+    void startPreview();
 
     /**
      * 设置推流地址
@@ -70,6 +51,12 @@ public interface IPushStreamView {
      * 停止推流
      */
     void stopStreaming();
+
+    /**
+     * 是否开启美颜
+     * @param isOpen
+     */
+    void setBeautyIsOpen(boolean isOpen);
 
     /**
      * 回到前台，显示出来(可以做一些，恢复推流和恢复声音)
