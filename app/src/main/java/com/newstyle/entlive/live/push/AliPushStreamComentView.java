@@ -1,5 +1,6 @@
 package com.newstyle.entlive.live.push;
 
+import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.alivc.live.pusher.AlivcAudioAACProfileEnum;
@@ -15,7 +16,10 @@ import com.alivc.live.pusher.AlivcLivePusher;
 import com.alivc.live.pusher.AlivcPreviewOrientationEnum;
 import com.alivc.live.pusher.AlivcQualityModeEnum;
 import com.alivc.live.pusher.AlivcResolutionEnum;
+import com.alivc.live.pusher.SurfaceStatus;
 import com.newstyle.entlive.Appli;
+import com.newstyle.entlive.util.LogUtil;
+import com.newstyle.entlive.util.Utils;
 
 /**
  * Created by wangdong on 2018/4/26.
@@ -23,11 +27,14 @@ import com.newstyle.entlive.Appli;
 
 public class AliPushStreamComentView implements IPushStreamView {
 
+    private static final String TAG = AliPushStreamComentView.class.getSimpleName();
+
     private AlivcLivePushConfig mAlivcLivePushConfig;
     private AlivcLivePusher mAlivcLivePusher;
     private PushStreamListener mPushStreamListener;
     private SurfaceView mPreShowView;
     private String mPushUrl;
+    private SurfaceStatus mSurfaceStatus = SurfaceStatus.UNINITED;
 
 
     public AliPushStreamComentView(SurfaceView surfaceView){
@@ -36,6 +43,7 @@ public class AliPushStreamComentView implements IPushStreamView {
         mAlivcLivePusher = new AlivcLivePusher();
         mAlivcLivePusher.init(Appli.getContext(), mAlivcLivePushConfig);
         setPusherListener();
+        this.mPreShowView.getHolder().addCallback(mCallback);
     }
 
     private void initConfig(){
@@ -207,6 +215,38 @@ public class AliPushStreamComentView implements IPushStreamView {
         });
     }
 
+    SurfaceHolder.Callback mCallback = new SurfaceHolder.Callback() {
+        @Override
+        public void surfaceCreated(SurfaceHolder surfaceHolder) {
+            if(mSurfaceStatus == SurfaceStatus.UNINITED) {
+                mSurfaceStatus = SurfaceStatus.CREATED;
+                if(mAlivcLivePusher != null) {
+                    try {
+                        mAlivcLivePusher.startPreview(mPreShowView);
+                        LogUtil.logLocal(TAG,"startPreview");
+                    } catch (IllegalArgumentException e) {
+                        e.toString();
+                    } catch (IllegalStateException e) {
+                        e.toString();
+                    }
+                }
+            } else if(mSurfaceStatus == SurfaceStatus.DESTROYED) {
+                mSurfaceStatus = SurfaceStatus.RECREATED;
+            }
+        }
+
+        @Override
+        public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+            mSurfaceStatus = SurfaceStatus.CHANGED;
+
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+            mSurfaceStatus = SurfaceStatus.DESTROYED;
+        }
+    };
+
 
     @Override
     public void setStreamListener(PushStreamListener streamListener) {
@@ -261,6 +301,7 @@ public class AliPushStreamComentView implements IPushStreamView {
 
     @Override
     public void onResume() {
+        LogUtil.logLocal(TAG,"onResume");
         if (mAlivcLivePusher.getCurrentStatus() == AlivcLivePushStats.PUSHED) {
             mAlivcLivePusher.resume();
         }

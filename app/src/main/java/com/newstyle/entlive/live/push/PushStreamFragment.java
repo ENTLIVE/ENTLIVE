@@ -58,7 +58,7 @@ public class PushStreamFragment extends BaseFragment implements PushContract.Vie
     public void onResume() {
         super.onResume();
         mPushStreamViewManager.onResume();
-        mPushStreamViewManager.startPreview();
+        //mPushStreamViewManager.startPreview();
     }
 
     @Override

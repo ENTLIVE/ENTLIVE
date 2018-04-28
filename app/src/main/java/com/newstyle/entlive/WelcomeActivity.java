@@ -1,9 +1,13 @@
 package com.newstyle.entlive;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -45,6 +49,8 @@ public class WelcomeActivity extends BaseActivity{
 
     private static final String TAG = WelcomeActivity.class.getSimpleName();
 
+    public static final int REQ_CODE_PERMISSION = 0x1111;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +68,10 @@ public class WelcomeActivity extends BaseActivity{
             }
         });
 
+        if (ContextCompat.checkSelfPermission(WelcomeActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // Do not have the permission of camera, request it.
+            ActivityCompat.requestPermissions(WelcomeActivity.this, new String[]{Manifest.permission.CAMERA}, REQ_CODE_PERMISSION);
+        }
         //接口调用示例
         /*HashMap<String,String> params = new HashMap<>();
         params.put("name","wangdong");
